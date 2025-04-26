@@ -63,3 +63,32 @@ setInterval(() => {
     updateDisplay();
   }
 }, 1000); // Runs every second
+function saveGame() {
+  const gameData = {
+    goods,
+    money,
+    taxRate,
+    population,
+    houses
+  };
+  localStorage.setItem("taxGameSave", JSON.stringify(gameData));
+}
+
+function loadGame() {
+  const saved = localStorage.getItem("taxGameSave");
+  if (saved) {
+    const gameData = JSON.parse(saved);
+    goods = gameData.goods || 0;
+    money = gameData.money || 0;
+    taxRate = gameData.taxRate || 0.10;
+    population = gameData.population || 0;
+    houses = gameData.houses || 0;
+    updateDisplay();
+  }
+}
+
+// Save the game every 5 seconds
+setInterval(saveGame, 5000);
+
+// Load the game when page loads
+window.onload = loadGame;
