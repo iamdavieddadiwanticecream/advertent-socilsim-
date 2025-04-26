@@ -121,6 +121,9 @@ function saveGame() {
     population,
     houses,
     stability,
+      farms,
+    housingFactories,
+    schools,
   };
   localStorage.setItem("taxGameSave", JSON.stringify(gameData));
 }
