@@ -6,6 +6,10 @@ let houses = 0;
 let stability = 100;
 
 function produce() {
+  if (stability <= 20) {
+    alert("The people are too unhappy to work!");
+    return;
+  }
   goods += 1;
   let tax = parseFloat((1 * taxRate).toFixed(2));
   money += tax;
@@ -45,26 +49,23 @@ function updateDisplay() {
   document.getElementById("taxRate").textContent = Math.round(taxRate * 100) + "%";
   document.getElementById("population").textContent = population;
   document.getElementById("houseCount").textContent = houses;
-   updateStability();
+  updateStability();
 }
 
-// Passive population growth: +1 per house every 5 seconds
-setInterval(() => {
-  if (houses > 0) {
-    population += houses;
-    updateDisplay();
+function updateStability() {
+  // Calculate the target stability based on tax rate
+  let target = Math.max(0, 100 - Math.floor(taxRate * 100 * 1.5));
+
+  if (stability > target) {
+    stability -= 1;
+  } else if (stability < target) {
+    stability += 1;
   }
-}, 5000);
-// Passive production based on population
-setInterval(() => {
-  if (population > 0) {
-    let produced = Math.floor(population / 10); // 1 good per 10 people
-    goods += produced;
-    let tax = parseFloat((produced * taxRate).toFixed(2));
-    money += tax;
-    updateDisplay();
-  }
-}, 1000); // Runs every second
+
+  document.getElementById("stability").textContent = stability + "%";
+}
+
+// 🔄 Save/load system
 function saveGame() {
   const gameData = {
     goods,
@@ -89,11 +90,6 @@ function loadGame() {
   }
 }
 
-// Save the game every 5 seconds
-setInterval(saveGame, 5000);
-
-// Load the game when page loads
-window.onload = loadGame;
 function resetGame() {
   localStorage.removeItem("taxGameSave");
   goods = 0;
@@ -101,22 +97,39 @@ function resetGame() {
   taxRate = 0.10;
   population = 0;
   houses = 0;
+  stability = 100;
   updateDisplay();
 }
-function produce() {
-  if (stability < 20) {
-    alert("The people are too unhappy to work!");
-    return;
+
+// 🔁 Intervals
+
+// Stability updates every second
+setInterval(updateStability, 2500);
+
+// Passive production based on population & stability
+setInterval(() => {
+  if (stability > 20) {
+    let autoProduced = Math.floor(population / 10);
+    if (autoProduced > 0) {
+      goods += autoProduced;
+      let tax = parseFloat((autoProduced * taxRate).toFixed(2));
+      money += tax;
+      updateDisplay();
+    }
   }
-  goods += 1;
-  let tax = parseFloat((1 * taxRate).toFixed(2));
-  money += tax;
-  updateDisplay();
-}
-stability = Math.max(0, 100 - Math.floor(taxRate * 100 * 1.5)); // e.g. 60% tax = 10% stability
-document.getElementById("stability").textContent = stability + "%";
-function updateStability() {
-  stability = Math.max(0, 100 - Math.floor(taxRate * 100 * 1.5));
-  document.getElementById("stability").textContent = stability + "%";
-}
-setInterval(updateStability, 1000); // updates every second
+}, 1000);
+
+// Lose 10% of population every 10 seconds if stability is low
+setInterval(() => {
+  if (stability <= 20 && population > 0) {
+    let lost = Math.floor(population * 0.10);
+    population = Math.max(0, population - lost);
+    updateDisplay();
+  }
+}, 10000);
+
+// Auto-save every 5 seconds
+setInterval(saveGame, 5000);
+
+// Load game on page load
+window.onload = loadGame;
