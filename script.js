@@ -8,6 +8,47 @@ let farms = 0;
 let housingFactories = 0;
 let schools = 0;
 
+let housePrice = 10;
+let farmPrice = 200;
+let housingFactoryPrice = 5000;
+let schoolPrice = 30;
+
+function buildHouse() {
+  if (money >= housePrice) {
+    money -= housePrice;
+    houses += 1;
+    population += 5;
+    housePrice = Math.round(housePrice * 1.35); // Increase the price by 35%
+    updateDisplay();
+  } else {
+    alert("Not enough coins to build a house!");
+  }
+}
+
+function buildFarm() {
+  if (money >= farmPrice) {
+    money -= farmPrice;
+    farms += 1;
+    goods += 10; // Each farm produces 10 goods
+    farmPrice = Math.round(farmPrice * 1.35); // Increase the price by 35%
+    updateDisplay();
+  } else {
+    alert("Not enough coins to build a farm!");
+  }
+}
+
+function buildHousingFactory() {
+  if (money >= housingFactoryPrice) {
+    money -= housingFactoryPrice;
+    housingFactories += 1;
+    housingFactoryPrice = Math.round(housingFactoryPrice * 1.35); // Increase the price by 35%
+    updateDisplay();
+  } else {
+    alert("Not enough coins to build a housing factory!");
+  }
+}
+
+
 function produce() {
   if (stability <= 20) {
     alert("The people are too unhappy to work!");
@@ -96,6 +137,11 @@ function updateDisplay() {
   document.getElementById("farmCount").textContent = farms.toLocaleString();
   document.getElementById("housingFactoryCount").textContent = housingFactories.toLocaleString();
   document.getElementById("schoolCount").textContent = schools.toLocaleString();
+ // Optionally, update the displayed prices on the buttons
+  document.getElementById("buildHouseButton").textContent = `Build House (${housePrice} coins)`;
+  document.getElementById("buildFarmButton").textContent = `Build Farm (${farmPrice} coins)`;
+  document.getElementById("buildHousingFactoryButton").textContent = `Build Housing Factory (${housingFactoryPrice} coins)`;
+  document.getElementById("buildSchoolButton").textContent = `Build School (${schoolPrice} coins)`;
 }
 
 function updateStability() {
