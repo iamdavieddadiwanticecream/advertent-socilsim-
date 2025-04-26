@@ -66,7 +66,6 @@ function buildHousingFactory() {
     alert("Not enough coins to build a housing factory!");
   }
 }
-
 // Housing factories build 1 house every 5 sec per factory
 setInterval(() => {
   if (housingFactories > 0) {
