@@ -18,7 +18,8 @@ function buildHouse() {
     money -= housePrice;
     houses += 1;
     population += 5;
-    housePrice = Math.round(housePrice * 1.35); // Increase the price by 35%
+    housePrice = Math.round(housePrice * 1.35); // Increase price by 35%
+    console.log("New house price: " + housePrice);  // Debugging line
     updateDisplay();
   } else {
     alert("Not enough coins to build a house!");
@@ -30,7 +31,8 @@ function buildFarm() {
     money -= farmPrice;
     farms += 1;
     goods += 10; // Each farm produces 10 goods
-    farmPrice = Math.round(farmPrice * 1.35); // Increase the price by 35%
+    farmPrice = Math.round(farmPrice * 1.35); // Increase price by 35%
+    console.log("New farm price: " + farmPrice);  // Debugging line
     updateDisplay();
   } else {
     alert("Not enough coins to build a farm!");
@@ -41,7 +43,8 @@ function buildHousingFactory() {
   if (money >= housingFactoryPrice) {
     money -= housingFactoryPrice;
     housingFactories += 1;
-    housingFactoryPrice = Math.round(housingFactoryPrice * 1.35); // Increase the price by 35%
+    housingFactoryPrice = Math.round(housingFactoryPrice * 1.35); // Increase price by 35%
+    console.log("New housing factory price: " + housingFactoryPrice);  // Debugging line
     updateDisplay();
   } else {
     alert("Not enough coins to build a housing factory!");
@@ -52,8 +55,8 @@ function buildSchool() {
   if (money >= schoolPrice) {
     money -= schoolPrice;
     schools += 1;
-    stability += 5; // Each school increases stability
-    schoolPrice = Math.round(schoolPrice * 1.35); // Increase the price by 35%
+    schoolPrice = Math.round(schoolPrice * 1.35); // Increase price by 35%
+    console.log("New school price: " + schoolPrice);  // Debugging line
     updateDisplay();
   } else {
     alert("Not enough coins to build a school!");
