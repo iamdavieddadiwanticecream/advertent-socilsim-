@@ -6,18 +6,10 @@ let houses = 0;
 
 function produce() {
   goods += 1;
-  let tax = Math.floor(1 * taxRate * 100) / 100;
-  money += tax;
-  updateDisplay();
+  let tax = parseFloat((1 * taxRate).toFixed(2));  // Calculate tax on the goods
+  money += tax;  // Add tax to money
+  updateDisplay();  // Update the display
 }
-
-function produce() {
-  goods += 1;
-  let tax = parseFloat((1 * taxRate).toFixed(2));
-  money += tax;
-  updateDisplay();
-}
-
 
 function decreaseTax() {
   if (taxRate > 0.05) {
