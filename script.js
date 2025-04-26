@@ -147,6 +147,10 @@ function updateStability() {
   document.getElementById("stability").textContent = stability + "%";
 }
 
+console.log("Money: ", money);
+console.log("Housing Factories: ", housingFactories);
+console.log("Housing Factory Price: ", housingFactoryPrice);
+
 // 🔄 Save/load system
 function saveGame() {
   const gameData = {
@@ -236,6 +240,4 @@ setInterval(() => {
     updateDisplay();
   }
 }, 2000);  // Set interval to 2 seconds
-console.log("Money: ", money);
-console.log("Housing Factories: ", housingFactories);
-console.log("Housing Factory Price: ", housingFactoryPrice);
+
