@@ -55,11 +55,11 @@ setInterval(() => {
 }, 5000);
 // Passive production based on population
 setInterval(() => {
-  let autoProduced = Math.floor(population / 10);
-  if (autoProduced > 0) {
-    goods += autoProduced;
-    let tax = parseFloat((autoProduced * taxRate).toFixed(2));
+  if (population > 0) {
+    let produced = Math.floor(population / 10); // 1 good per 10 people
+    goods += produced;
+    let tax = parseFloat((produced * taxRate).toFixed(2));
     money += tax;
     updateDisplay();
   }
-}, 1000); // every second
+}, 1000); // Runs every second
