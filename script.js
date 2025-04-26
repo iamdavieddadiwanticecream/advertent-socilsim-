@@ -58,8 +58,8 @@ function buildFarm() {
 }
 
 function buildHousingFactory() {
-  if (money >= 50) {
-    money -= 50;
+  if (money >= 5000) {
+    money -= 5000;
     housingFactories += 1;
     updateDisplay();
   } else {
