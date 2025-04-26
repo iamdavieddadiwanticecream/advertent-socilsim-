@@ -65,6 +65,17 @@ function buildHousingFactory() {
   }
 }
 
+function autoBuildHouses() {
+  if (housingFactories > 0) {
+    houses += housingFactories;
+    population += housingFactories * 5; // Each house adds 5 population
+    updateDisplay();
+  }
+}
+
+// Run this every 15 seconds
+setInterval(autoBuildHouses, 10000);
+
 function buildSchool() {
   if (money >= schoolPrice) {
     money -= schoolPrice;
