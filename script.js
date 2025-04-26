@@ -2,6 +2,7 @@ let goods = 0;
 let money = 0;
 let taxRate = 0.10;
 let population = 0;
+let farmPeopleRequired = 100;
 let houses = 0;
 let stability = 100;
 let farms = 0;
@@ -18,7 +19,7 @@ function buildHouse() {
     money -= housePrice;
     houses += 1;
     population += 5;
-    housePrice = Math.round(housePrice * 1.35); // Increase price by 35%
+    housePrice = Math.round(housePrice * 1.20); // Increase price by 20%
     console.log("New house price: " + housePrice);  // Debugging line
     updateDisplay();
   } else {
@@ -30,8 +31,8 @@ function buildFarm() {
   if (money >= farmPrice) {
     money -= farmPrice;
     farms += 1;
-    goods += 10; // Each farm produces 10 goods
-    farmPrice = Math.round(farmPrice * 1.35); // Increase price by 35%
+    goods += 100; // Each farm produces 100 goods
+    farmPrice = Math.round(farmPrice * 1.20); // Increase price by 20%
     console.log("New farm price: " + farmPrice);  // Debugging line
     updateDisplay();
   } else {
@@ -39,11 +40,25 @@ function buildFarm() {
   }
 }
 
+function updateFarmProduction() {
+  // Calculate how many farms can be supported by the current population
+  let supportedFarms = Math.floor(population / farmPeopleRequired);
+
+  // Farms can't produce goods unless they are supported by enough population
+  let goodsToProduce = Math.min(supportedFarms, farms); // Cannot produce goods if there are not enough farms
+
+  // Add goods produced by the supported farms
+  goods += goodsToProduce;
+
+  updateDisplay();
+}
+setInterval(updateFarmProduction, 1000);
+
 function buildHousingFactory() {
   if (money >= housingFactoryPrice) {
     money -= housingFactoryPrice;
     housingFactories += 1;
-    housingFactoryPrice = Math.round(housingFactoryPrice * 1.35); // Increase price by 35%
+    housingFactoryPrice = Math.round(housingFactoryPrice * 1.20); // Increase price by 20%
     console.log("New housing factory price: " + housingFactoryPrice);  // Debugging line
     updateDisplay();
   } else {
@@ -55,7 +70,7 @@ function buildSchool() {
   if (money >= schoolPrice) {
     money -= schoolPrice;
     schools += 1;
-    schoolPrice = Math.round(schoolPrice * 1.35); // Increase price by 35%
+    schoolPrice = Math.round(schoolPrice * 1.20); // Increase price by 20%
     console.log("New school price: " + schoolPrice);  // Debugging line
     updateDisplay();
   } else {
