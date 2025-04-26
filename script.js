@@ -97,7 +97,7 @@ function updateDisplay() {
   document.getElementById("housingFactoryCount").textContent = housingFactories.toLocaleString();
   document.getElementById("schoolCount").textContent = schools.toLocaleString();
 }
-}
+
 function updateStability() {
   // Calculate target based on tax rate
   let target = Math.max(0, 100 - Math.floor(taxRate * 100 * 1.5));
