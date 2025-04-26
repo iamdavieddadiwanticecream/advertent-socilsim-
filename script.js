@@ -19,6 +19,14 @@ function decreaseTax() {
   }
 }
 
+function increaseTax() {  // This is the function to increase the tax rate
+  if (taxRate < 1.0) {
+    taxRate += 0.05;
+    taxRate = Math.round(taxRate * 100) / 100;
+    updateDisplay();
+  }
+}
+
 function buildHouse() {
   if (money >= 10) {
     money -= 10;
