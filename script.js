@@ -45,7 +45,7 @@ function buildHouse() {
 
 function updateDisplay() {
   document.getElementById("goods").textContent = goods.toLocaleString();
-  document.getElementById("money").textContent = money.toFixed(2).toLocaleString();  // Money should also have commas
+  document.getElementById("money").textContent = money.toFixed(2).toLocaleString(); 
   document.getElementById("taxRate").textContent = Math.round(taxRate * 100) + "%";
   document.getElementById("population").textContent = population.toLocaleString();
   document.getElementById("houseCount").textContent = houses.toLocaleString();
