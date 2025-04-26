@@ -73,7 +73,7 @@ function saveGame() {
     money,
     taxRate,
     population,
-    houses
+    houses,
     stability,
   };
   localStorage.setItem("taxGameSave", JSON.stringify(gameData));
