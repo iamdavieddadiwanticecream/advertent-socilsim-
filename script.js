@@ -44,14 +44,13 @@ function buildHouse() {
 }
 
 function updateDisplay() {
-  document.getElementById("goods").textContent = goods;
-  document.getElementById("money").textContent = money.toFixed(2);
+  document.getElementById("goods").textContent = goods.toLocaleString();
+  document.getElementById("money").textContent = money.toFixed(2).toLocaleString();  // Money should also have commas
   document.getElementById("taxRate").textContent = Math.round(taxRate * 100) + "%";
-  document.getElementById("population").textContent = population;
-  document.getElementById("houseCount").textContent = houses;
+  document.getElementById("population").textContent = population.toLocaleString();
+  document.getElementById("houseCount").textContent = houses.toLocaleString();
   document.getElementById("stability").textContent = stability + "%";
 }
-
 function updateStability() {
   // Calculate target based on tax rate
   let target = Math.max(0, 100 - Math.floor(taxRate * 100 * 1.5));
