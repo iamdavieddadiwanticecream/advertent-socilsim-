@@ -23,3 +23,9 @@ body {
   padding: 20px;
   flex-grow: 1;
 }
+#property {
+  display: flex;
+  flex-direction: column;  /* Stack vertically */
+  gap: 10px;               /* Space between buttons */
+  margin-top: 20px;
+}
