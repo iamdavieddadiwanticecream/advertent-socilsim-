@@ -138,3 +138,10 @@ window.onload = function () {
   loadGame();
   updateStability();
 };
+// Passive population growth based on houses, 1 population every 2 seconds
+setInterval(() => {
+  if (stability > 20) {
+    population += houses;  // Each house contributes 1 population every 2 seconds
+    updateDisplay();
+  }
+}, 2000);  // Set interval to 2 seconds
