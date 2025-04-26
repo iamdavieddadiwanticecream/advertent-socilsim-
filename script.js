@@ -74,6 +74,7 @@ function saveGame() {
     taxRate,
     population,
     houses
+    stability,
   };
   localStorage.setItem("taxGameSave", JSON.stringify(gameData));
 }
@@ -87,6 +88,7 @@ function loadGame() {
     taxRate = gameData.taxRate || 0.10;
     population = gameData.population || 0;
     houses = gameData.houses || 0;
+    stability = gameData.stability || 100;
     updateDisplay();
   }
 }
@@ -133,4 +135,7 @@ setInterval(() => {
 setInterval(saveGame, 5000);
 
 // Load save on start
-window.onload = loadGame;
+window.onload = function () {
+  loadGame();
+  updateStability();
+};
