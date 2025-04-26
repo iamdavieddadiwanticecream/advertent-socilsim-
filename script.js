@@ -121,7 +121,7 @@ function saveGame() {
     population,
     houses,
     stability,
-      farms,
+    farms,
     housingFactories,
     schools,
   };
