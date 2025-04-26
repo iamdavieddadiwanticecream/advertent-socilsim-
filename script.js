@@ -3,6 +3,7 @@ let money = 0;
 let taxRate = 0.10;
 let population = 0;
 let houses = 0;
+let stability = 100;
 
 function produce() {
   goods += 1;
@@ -101,3 +102,15 @@ function resetGame() {
   houses = 0;
   updateDisplay();
 }
+function produce() {
+  if (stability < 20) {
+    alert("The people are too unhappy to work!");
+    return;
+  }
+  goods += 1;
+  let tax = parseFloat((1 * taxRate).toFixed(2));
+  money += tax;
+  updateDisplay();
+}
+stability = Math.max(0, 100 - Math.floor(taxRate * 100 * 1.5)); // e.g. 60% tax = 10% stability
+document.getElementById("stability").textContent = stability + "%";
