@@ -45,6 +45,7 @@ function updateDisplay() {
   document.getElementById("taxRate").textContent = Math.round(taxRate * 100) + "%";
   document.getElementById("population").textContent = population;
   document.getElementById("houseCount").textContent = houses;
+   updateStability();
 }
 
 // Passive population growth: +1 per house every 5 seconds
@@ -114,3 +115,8 @@ function produce() {
 }
 stability = Math.max(0, 100 - Math.floor(taxRate * 100 * 1.5)); // e.g. 60% tax = 10% stability
 document.getElementById("stability").textContent = stability + "%";
+function updateStability() {
+  stability = Math.max(0, 100 - Math.floor(taxRate * 100 * 1.5));
+  document.getElementById("stability").textContent = stability + "%";
+}
+setInterval(updateStability, 1000); // updates every second
