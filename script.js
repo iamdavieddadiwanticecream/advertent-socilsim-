@@ -48,6 +48,17 @@ function buildHousingFactory() {
   }
 }
 
+function buildSchool() {
+  if (money >= schoolPrice) {
+    money -= schoolPrice;
+    schools += 1;
+    stability += 5; // Each school increases stability
+    schoolPrice = Math.round(schoolPrice * 1.35); // Increase the price by 35%
+    updateDisplay();
+  } else {
+    alert("Not enough coins to build a school!");
+  }
+}
 
 function produce() {
   if (stability <= 20) {
@@ -76,57 +87,6 @@ function increaseTax() {
   }
 }
 
-function buildHouse() {
-  if (money >= 10) {
-    money -= 10;
-    houses += 1;
-    population += 5;
-    updateDisplay();
-  } else {
-    alert("Not enough coins to build a house!");
-  }
-}
-
-function buildFarm() {
-  if (money >= 200) {
-    money -= 200;
-    farms += 1;
-    goods += 10; // Each farm produces 10 goods per production cycle
-    updateDisplay();
-  } else {
-    alert("Not enough coins to build a farm!");
-  }
-}
-
-function buildHousingFactory() {
-  if (money >= 5000) {
-    money -= 5000;
-    housingFactories += 1;
-    updateDisplay();
-  } else {
-    alert("Not enough coins to build a housing factory!");
-  }
-}
-// Housing factories build 1 house every 5 sec per factory
-setInterval(() => {
-  if (housingFactories > 0) {
-    houses += housingFactories;
-    population += housingFactories * 5; // Each house adds 5 population
-    updateDisplay();
-  }
-}, 5000);
-
-function buildSchool() {
-  if (money >= 30) {
-    money -= 30;
-    schools += 1;
-    stability += 5; // Each school increases stability
-    updateDisplay();
-  } else {
-    alert("Not enough coins to build a school!");
-  }
-}
-
 function updateDisplay() {
   document.getElementById("goods").textContent = goods.toLocaleString();
   document.getElementById("money").textContent = money.toFixed(2).toLocaleString();  // Format money (tax revenue)
@@ -137,7 +97,8 @@ function updateDisplay() {
   document.getElementById("farmCount").textContent = farms.toLocaleString();
   document.getElementById("housingFactoryCount").textContent = housingFactories.toLocaleString();
   document.getElementById("schoolCount").textContent = schools.toLocaleString();
- // Optionally, update the displayed prices on the buttons
+
+  // Optionally, update the displayed prices on the buttons
   document.getElementById("buildHouseButton").textContent = `Build House (${housePrice} coins)`;
   document.getElementById("buildFarmButton").textContent = `Build Farm (${farmPrice} coins)`;
   document.getElementById("buildHousingFactoryButton").textContent = `Build Housing Factory (${housingFactoryPrice} coins)`;
@@ -184,7 +145,7 @@ function loadGame() {
     population = gameData.population || 0;
     houses = gameData.houses || 0;
     stability = gameData.stability || 100;
-     farms = gameData.farms || 0; 
+    farms = gameData.farms || 0; 
     housingFactories = gameData.housingFactories || 0; 
     schools = gameData.schools || 0; 
     updateDisplay();
