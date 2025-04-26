@@ -138,6 +138,9 @@ function loadGame() {
     population = gameData.population || 0;
     houses = gameData.houses || 0;
     stability = gameData.stability || 100;
+     farms = gameData.farms || 0; 
+    housingFactories = gameData.housingFactories || 0; 
+    schools = gameData.schools || 0; 
     updateDisplay();
   }
 }
@@ -150,9 +153,9 @@ function resetGame() {
   population = 0;
   houses = 0;
   stability = 100;
-   farms = gameData.farms || 0; 
-    housingFactories = gameData.housingFactories || 0; 
-    schools = gameData.schools || 0; 
+  farms = gameData.farms || 0; 
+  housingFactories = gameData.housingFactories || 0; 
+  schools = gameData.schools || 0; 
   updateDisplay();
 }
 
