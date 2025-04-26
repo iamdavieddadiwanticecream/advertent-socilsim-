@@ -92,3 +92,12 @@ setInterval(saveGame, 5000);
 
 // Load the game when page loads
 window.onload = loadGame;
+function resetGame() {
+  localStorage.removeItem("taxGameSave");
+  goods = 0;
+  money = 0;
+  taxRate = 0.10;
+  population = 0;
+  houses = 0;
+  updateDisplay();
+}
