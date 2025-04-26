@@ -163,6 +163,11 @@ function saveGame() {
     farms,
     housingFactories,
     schools,
+    housePrice,
+    farmPrice,
+    housingFactoryPrice,
+    schoolPrice,
+
   };
   localStorage.setItem("taxGameSave", JSON.stringify(gameData));
 }
@@ -180,6 +185,10 @@ function loadGame() {
     farms = gameData.farms || 0; 
     housingFactories = gameData.housingFactories || 0; 
     schools = gameData.schools || 0; 
+    housePrice = gameData.housePrice || 10;
+    farmPrice = gameData.farmPrice || 200;
+    housingFactoryPrice = gameData.housingFactoryPrice || 5000;
+    schoolPrice = gameData.schoolPrice || 30;
     updateDisplay();
   }
 }
@@ -195,6 +204,7 @@ function resetGame() {
   farms = 0;
   housingFactories = 0;
   schools = 0;
+  housingFactoryPrice = 5000;
   updateDisplay();
 }
 
