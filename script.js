@@ -49,11 +49,11 @@ function updateDisplay() {
   document.getElementById("taxRate").textContent = Math.round(taxRate * 100) + "%";
   document.getElementById("population").textContent = population;
   document.getElementById("houseCount").textContent = houses;
-  updateStability();
+  document.getElementById("stability").textContent = stability + "%";
 }
 
 function updateStability() {
-  // Calculate the target stability based on tax rate
+  // Calculate target based on tax rate
   let target = Math.max(0, 100 - Math.floor(taxRate * 100 * 1.5));
 
   if (stability > target) {
@@ -62,6 +62,7 @@ function updateStability() {
     stability += 1;
   }
 
+  // Update display
   document.getElementById("stability").textContent = stability + "%";
 }
 
@@ -101,12 +102,12 @@ function resetGame() {
   updateDisplay();
 }
 
-// 🔁 Intervals
+// ⏱ Intervals
 
-// Stability updates every second
+// Gradually update stability every 2.5 seconds
 setInterval(updateStability, 2500);
 
-// Passive production based on population & stability
+// Passive production if stability is OK
 setInterval(() => {
   if (stability > 20) {
     let autoProduced = Math.floor(population / 10);
@@ -119,7 +120,7 @@ setInterval(() => {
   }
 }, 1000);
 
-// Lose 10% of population every 10 seconds if stability is low
+// Lose 10% of population every 10 sec if stability is low
 setInterval(() => {
   if (stability <= 20 && population > 0) {
     let lost = Math.floor(population * 0.10);
@@ -128,8 +129,8 @@ setInterval(() => {
   }
 }, 10000);
 
-// Auto-save every 5 seconds
+// Auto-save every 5 sec
 setInterval(saveGame, 5000);
 
-// Load game on page load
+// Load save on start
 window.onload = loadGame;
