@@ -11,13 +11,13 @@ function produce() {
   updateDisplay();
 }
 
-function increaseTax() {
-  if (taxRate < 1.0) {
-    taxRate += 0.05;
-    taxRate = Math.round(taxRate * 100) / 100;
-    updateDisplay();
-  }
+function produce() {
+  goods += 1;
+  let tax = parseFloat((1 * taxRate).toFixed(2));
+  money += tax;
+  updateDisplay();
 }
+
 
 function decreaseTax() {
   if (taxRate > 0.05) {
