@@ -6,9 +6,9 @@ let houses = 0;
 
 function produce() {
   goods += 1;
-  let tax = parseFloat((1 * taxRate).toFixed(2));  
-  money += tax;  
-  updateDisplay();  
+  let tax = parseFloat((1 * taxRate).toFixed(2));
+  money += tax;
+  updateDisplay();
 }
 
 function decreaseTax() {
@@ -19,7 +19,7 @@ function decreaseTax() {
   }
 }
 
-function increaseTax() {  
+function increaseTax() {
   if (taxRate < 1.0) {
     taxRate += 0.05;
     taxRate = Math.round(taxRate * 100) / 100;
@@ -43,4 +43,13 @@ function updateDisplay() {
   document.getElementById("money").textContent = money.toFixed(2);
   document.getElementById("taxRate").textContent = Math.round(taxRate * 100) + "%";
   document.getElementById("population").textContent = population;
+  document.getElementById("houseCount").textContent = houses;
 }
+
+// Passive population growth: +1 per house every 5 seconds
+setInterval(() => {
+  if (houses > 0) {
+    population += houses;
+    updateDisplay();
+  }
+}, 5000);
