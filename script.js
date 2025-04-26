@@ -58,8 +58,7 @@ function buildHousingFactory() {
   if (money >= housingFactoryPrice) {
     money -= housingFactoryPrice;
     housingFactories += 1;
-    housingFactoryPrice = Math.round(housingFactoryPrice * 1.20); // Increase price by 20%
-    console.log("New housing factory price: " + housingFactoryPrice);  // Debugging line
+    housingFactoryPrice = Math.round(housingFactoryPrice * 1.25); // 25% price increase after each factory
     updateDisplay();
   } else {
     alert("Not enough coins to build a housing factory!");
@@ -226,3 +225,6 @@ setInterval(() => {
     updateDisplay();
   }
 }, 2000);  // Set interval to 2 seconds
+console.log("Money: ", money);
+console.log("Housing Factories: ", housingFactories);
+console.log("Housing Factory Price: ", housingFactoryPrice);
