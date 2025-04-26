@@ -4,6 +4,9 @@ let taxRate = 0.10;
 let population = 0;
 let houses = 0;
 let stability = 100;
+let farms = 0;
+let housingFactories = 0;
+let schools = 0;
 
 function produce() {
   if (stability <= 20) {
@@ -43,6 +46,47 @@ function buildHouse() {
   }
 }
 
+function buildFarm() {
+  if (money >= 200) {
+    money -= 200;
+    farms += 1;
+    goods += 10; // Each farm produces 10 goods per production cycle
+    updateDisplay();
+  } else {
+    alert("Not enough coins to build a farm!");
+  }
+}
+
+function buildHousingFactory() {
+  if (money >= 50) {
+    money -= 50;
+    housingFactories += 1;
+    updateDisplay();
+  } else {
+    alert("Not enough coins to build a housing factory!");
+  }
+}
+
+// Housing factories build 1 house every 5 sec per factory
+setInterval(() => {
+  if (housingFactories > 0) {
+    houses += housingFactories;
+    population += housingFactories * 5; // Each house adds 5 population
+    updateDisplay();
+  }
+}, 5000);
+
+function buildSchool() {
+  if (money >= 30) {
+    money -= 30;
+    schools += 1;
+    stability += 5; // Each school increases stability
+    updateDisplay();
+  } else {
+    alert("Not enough coins to build a school!");
+  }
+}
+
 function updateDisplay() {
   document.getElementById("goods").textContent = goods.toLocaleString();
   document.getElementById("money").textContent = money.toFixed(2).toLocaleString();  // Format money (tax revenue)
@@ -50,6 +94,10 @@ function updateDisplay() {
   document.getElementById("population").textContent = population.toLocaleString();
   document.getElementById("houseCount").textContent = houses.toLocaleString();
   document.getElementById("stability").textContent = stability + "%";
+  document.getElementById("farmCount").textContent = farms.toLocaleString();
+  document.getElementById("housingFactoryCount").textContent = housingFactories.toLocaleString();
+  document.getElementById("schoolCount").textContent = schools.toLocaleString();
+}
 }
 function updateStability() {
   // Calculate target based on tax rate
