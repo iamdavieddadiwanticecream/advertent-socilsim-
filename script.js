@@ -172,6 +172,16 @@ setInterval(() => {
 
 console.log("Tax collected:", tax, "Buff:", getEducationBuff());
 
+setInterval(() => {
+  const maxPopulation = houses * 5;
+
+  if (stability > 20 && population < maxPopulation) {
+    population += 1; // One person born every cycle
+    updateDisplay();
+  }
+}, 5000); // Every 5 seconds (you can adjust this)
+
+
 function saveGame() {
   const gameData = {
     goods,
