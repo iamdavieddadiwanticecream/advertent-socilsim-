@@ -76,9 +76,6 @@ function buildSchool() {
   }
 }
 
-function getEducationBuff() {
-  return schools > 0 ? 2 : 1;
-}
 
 function produce() {
   if (stability <= 20) {
@@ -172,6 +169,7 @@ setInterval(() => {
   }
 }, 5000); // Every 5 seconds (you can adjust this)
 
+console.log("Tax collected:", tax, "Buff:", buff);
 
 function saveGame() {
   const gameData = {
