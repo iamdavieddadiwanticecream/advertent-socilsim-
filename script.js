@@ -10,8 +10,8 @@ let housingFactories = 0;
 let schools = 0;
 
 let housePrice = 10;
-let farmPrice = 200;
-let housingFactoryPrice = 5000;
+let farmPrice = 40;
+let housingFactoryPrice = 80;
 let schoolPrice = 30;
 
 function buildHouse() {
