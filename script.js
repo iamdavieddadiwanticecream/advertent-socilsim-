@@ -161,15 +161,6 @@ function getEducationBuff() {
   return 1 + (schools / schoolsNeeded); // Scales between 1.0 and 2.0
 }
 
-setInterval(() => {
-  const maxPopulation = houses * 5;
-
-  if (stability > 20 && population < maxPopulation) {
-    population += 10; // One person is born
-    updateDisplay();
-  }
-}, 1000); // Every 1 seconds (adjust if needed)
-
 console.log("Tax collected:", tax, "Buff:", getEducationBuff());
 
 setInterval(() => {
