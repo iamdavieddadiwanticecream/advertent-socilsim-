@@ -142,8 +142,9 @@ setInterval(() => {
   if (stability > 20) {
     let autoProduced = Math.floor(population / 10);
     if (autoProduced > 0) {
-      goods += autoProduced;
-      let tax = parseFloat((autoProduced * taxRate).toFixed(2));
+      let buff = getEducationBuff();
+      goods += autoProduced * buff;
+      let tax = parseFloat((autoProduced * taxRate * buff).toFixed(2));
       money += tax;
       updateDisplay();
     }
@@ -169,6 +170,7 @@ setInterval(() => {
   }
 }, 1000); // Every 1 seconds (adjust if needed)
 
+console.log("Tax collected:", tax, "Buff:", getEducationBuff());
 
 function saveGame() {
   const gameData = {
