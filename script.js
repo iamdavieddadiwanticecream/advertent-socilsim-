@@ -7,14 +7,11 @@ let houses = 0;
 let stability = 100;
 let farms = 0;
 let housingFactories = 0;
-let schools = 0;
-
+let schools = 0; // Keep track of schools
 let housePrice = 10;
 let farmPrice = 200;
 let housingFactoryPrice = 5000;
 let schoolPrice = 30;
-
-let educationBuff = 1; // Buff multiplier (1 = no buff, 2 = double speed)
 
 function buildHouse() {
   if (money >= housePrice) {
@@ -49,8 +46,8 @@ function updateFarmProduction() {
   // Farms can't produce goods unless they are supported by enough population
   let goodsToProduce = Math.min(supportedFarms, farms); // Cannot produce goods if there are not enough farms
 
-  // Add goods produced by the supported farms, considering education buff
-  goods += goodsToProduce * educationBuff;
+  // Add goods produced by the supported farms
+  goods += goodsToProduce;
 
   updateDisplay();
 }
@@ -75,14 +72,13 @@ function autoBuildHouses() {
   }
 }
 
-// Run this every 10 seconds
+// Run this every 15 seconds
 setInterval(autoBuildHouses, 10000);
 
 function buildSchool() {
   if (money >= schoolPrice) {
     money -= schoolPrice;
     schools += 1;
-    educationBuff = 1 + schools * 0.5; // Each school gives a 50% efficiency buff
     schoolPrice = Math.round(schoolPrice * 1.20); // Increase price by 20%
     console.log("New school price: " + schoolPrice);  // Debugging line
     updateDisplay();
@@ -91,13 +87,29 @@ function buildSchool() {
   }
 }
 
+// Education Buff Logic
+function getEducationBuff() {
+  // Buff for schools: 
+  // - Speed up production by 2x
+  // - Increase tax by 2x
+  // - Goods production is buffed by 2x
+  let educationBuffMultiplier = 1;
+  if (schools > 0) {
+    educationBuffMultiplier = 2; // 2x multiplier if at least 1 school exists
+  }
+  return educationBuffMultiplier;
+}
+
 function produce() {
   if (stability <= 20) {
     alert("The people are too unhappy to work!");
     return;
   }
-  goods += 1 * educationBuff; // Increased production with education buff
-  let tax = parseFloat((1 * taxRate).toFixed(2));
+  
+  let educationBuff = getEducationBuff(); // Get the education buff multiplier
+  
+  goods += educationBuff; // Goods produced is affected by the education buff
+  let tax = parseFloat((1 * taxRate).toFixed(2)) * educationBuff; // Tax is affected by the education buff
   money += tax;
   updateDisplay();
 }
@@ -128,7 +140,7 @@ function updateDisplay() {
   document.getElementById("farmCount").textContent = farms.toLocaleString();
   document.getElementById("housingFactoryCount").textContent = housingFactories.toLocaleString();
   document.getElementById("schoolCount").textContent = schools.toLocaleString();
-
+  document.getElementById("educationPercent").textContent = `${getEducationBuff() === 2 ? '100%' : '0%'}`; // Display 100% if schools exist
   // Optionally, update the displayed prices on the buttons
   document.getElementById("buildHouseButton").textContent = `Build House (${housePrice} coins)`;
   document.getElementById("buildFarmButton").textContent = `Build Farm (${farmPrice} coins)`;
@@ -150,6 +162,10 @@ function updateStability() {
   document.getElementById("stability").textContent = stability + "%";
 }
 
+console.log("Money: ", money);
+console.log("Housing Factories: ", housingFactories);
+console.log("Housing Factory Price: ", housingFactoryPrice);
+
 // 🔄 Save/load system
 function saveGame() {
   const gameData = {
@@ -166,7 +182,6 @@ function saveGame() {
     farmPrice,
     housingFactoryPrice,
     schoolPrice,
-    educationBuff,
   };
   localStorage.setItem("taxGameSave", JSON.stringify(gameData));
 }
@@ -188,7 +203,6 @@ function loadGame() {
     farmPrice = gameData.farmPrice || 200;
     housingFactoryPrice = gameData.housingFactoryPrice || 5000;
     schoolPrice = gameData.schoolPrice || 30;
-    educationBuff = gameData.educationBuff || 1;
     updateDisplay();
   }
 }
@@ -204,13 +218,11 @@ function resetGame() {
   farms = 0;
   housingFactories = 0;
   schools = 0;
-  educationBuff = 1;
   housingFactoryPrice = 5000;
   updateDisplay();
 }
 
 // ⏱ Intervals
-// Gradually update stability every 2.5 seconds
 setInterval(updateStability, 2500);
 
 // Passive production if stability is OK
@@ -218,36 +230,9 @@ setInterval(() => {
   if (stability > 20) {
     let autoProduced = Math.floor(population / 10);
     if (autoProduced > 0) {
-      goods += autoProduced * educationBuff;
+      goods += autoProduced;
       let tax = parseFloat((autoProduced * taxRate).toFixed(2));
       money += tax;
       updateDisplay();
     }
   }
-}, 1000);
-
-// Lose 10% of population every 10 sec if stability is low
-setInterval(() => {
-  if (stability <= 20 && population > 0) {
-    let lost = Math.floor(population * 0.10);
-    population = Math.max(0, population - lost);
-    updateDisplay();
-  }
-}, 10000);
-
-// Auto-save every 5 sec
-setInterval(saveGame, 5000);
-
-// Load save on start
-window.onload = function () {
-  loadGame();
-  updateStability();
-};
-
-// Passive population growth based on houses, 1 population every 2 seconds
-setInterval(() => {
-  if (stability > 20) {
-    population += houses;  // Each house contributes 1 population every 2 seconds
-    updateDisplay();
-  }
-}, 2000);  // Set interval to 2 seconds
