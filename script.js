@@ -7,7 +7,8 @@ let houses = 0;
 let stability = 100;
 let farms = 0;
 let housingFactories = 0;
-let schools = 0; // Keep track of schools
+let schools = 0;
+
 let housePrice = 10;
 let farmPrice = 200;
 let housingFactoryPrice = 5000;
@@ -19,7 +20,6 @@ function buildHouse() {
     houses += 1;
     population += 5;
     housePrice = Math.round(housePrice * 1.20); // Increase price by 20%
-    console.log("New house price: " + housePrice);  // Debugging line
     updateDisplay();
   } else {
     alert("Not enough coins to build a house!");
@@ -30,9 +30,7 @@ function buildFarm() {
   if (money >= farmPrice) {
     money -= farmPrice;
     farms += 1;
-    goods += 100; // Each farm produces 100 goods
     farmPrice = Math.round(farmPrice * 1.20); // Increase price by 20%
-    console.log("New farm price: " + farmPrice);  // Debugging line
     updateDisplay();
   } else {
     alert("Not enough coins to build a farm!");
@@ -40,15 +38,9 @@ function buildFarm() {
 }
 
 function updateFarmProduction() {
-  // Calculate how many farms can be supported by the current population
   let supportedFarms = Math.floor(population / farmPeopleRequired);
-
-  // Farms can't produce goods unless they are supported by enough population
-  let goodsToProduce = Math.min(supportedFarms, farms); // Cannot produce goods if there are not enough farms
-
-  // Add goods produced by the supported farms
-  goods += goodsToProduce;
-
+  let goodsToProduce = Math.min(supportedFarms, farms);
+  goods += goodsToProduce * 100 * getEducationBuff();
   updateDisplay();
 }
 setInterval(updateFarmProduction, 1000);
@@ -57,7 +49,7 @@ function buildHousingFactory() {
   if (money >= housingFactoryPrice) {
     money -= housingFactoryPrice;
     housingFactories += 1;
-    housingFactoryPrice = Math.round(housingFactoryPrice * 1.25); // 25% price increase after each factory
+    housingFactoryPrice = Math.round(housingFactoryPrice * 1.25); // 25% price increase
     updateDisplay();
   } else {
     alert("Not enough coins to build a housing factory!");
@@ -67,37 +59,25 @@ function buildHousingFactory() {
 function autoBuildHouses() {
   if (housingFactories > 0) {
     houses += housingFactories;
-    population += housingFactories * 5; // Each house adds 5 population
+    population += housingFactories * 5;
     updateDisplay();
   }
 }
-
-// Run this every 15 seconds
-setInterval(autoBuildHouses, 10000);
+setInterval(autoBuildHouses, 10000); // Runs every 10 seconds
 
 function buildSchool() {
   if (money >= schoolPrice) {
     money -= schoolPrice;
     schools += 1;
     schoolPrice = Math.round(schoolPrice * 1.20); // Increase price by 20%
-    console.log("New school price: " + schoolPrice);  // Debugging line
     updateDisplay();
   } else {
     alert("Not enough coins to build a school!");
   }
 }
 
-// Education Buff Logic
 function getEducationBuff() {
-  // Buff for schools: 
-  // - Speed up production by 2x
-  // - Increase tax by 2x
-  // - Goods production is buffed by 2x
-  let educationBuffMultiplier = 1;
-  if (schools > 0) {
-    educationBuffMultiplier = 2; // 2x multiplier if at least 1 school exists
-  }
-  return educationBuffMultiplier;
+  return schools > 0 ? 2 : 1;
 }
 
 function produce() {
@@ -105,14 +85,14 @@ function produce() {
     alert("The people are too unhappy to work!");
     return;
   }
-  
-  let educationBuff = getEducationBuff(); // Get the education buff multiplier
-  
-  goods += educationBuff; // Goods produced is affected by the education buff
-  let tax = parseFloat((1 * taxRate).toFixed(2)) * educationBuff; // Tax is affected by the education buff
+
+  let educationBuff = getEducationBuff();
+  goods += educationBuff;
+  let tax = parseFloat(taxRate.toFixed(2)) * educationBuff;
   money += tax;
   updateDisplay();
 }
+setInterval(produce, 5000); // Now actually runs every 5s
 
 function decreaseTax() {
   if (taxRate > 0.05) {
@@ -132,7 +112,7 @@ function increaseTax() {
 
 function updateDisplay() {
   document.getElementById("goods").textContent = goods.toLocaleString();
-  document.getElementById("money").textContent = money.toFixed(2).toLocaleString();  // Format money (tax revenue)
+  document.getElementById("money").textContent = money.toFixed(2).toLocaleString();
   document.getElementById("taxRate").textContent = Math.round(taxRate * 100) + "%";
   document.getElementById("population").textContent = population.toLocaleString();
   document.getElementById("houseCount").textContent = houses.toLocaleString();
@@ -140,8 +120,7 @@ function updateDisplay() {
   document.getElementById("farmCount").textContent = farms.toLocaleString();
   document.getElementById("housingFactoryCount").textContent = housingFactories.toLocaleString();
   document.getElementById("schoolCount").textContent = schools.toLocaleString();
-  document.getElementById("educationPercent").textContent = `${getEducationBuff() === 2 ? '100%' : '0%'}`; // Display 100% if schools exist
-  // Optionally, update the displayed prices on the buttons
+  document.getElementById("educationPercent").textContent = `${getEducationBuff() === 2 ? '100%' : '0%'}`;
   document.getElementById("buildHouseButton").textContent = `Build House (${housePrice} coins)`;
   document.getElementById("buildFarmButton").textContent = `Build Farm (${farmPrice} coins)`;
   document.getElementById("buildHousingFactoryButton").textContent = `Build Housing Factory (${housingFactoryPrice} coins)`;
@@ -149,24 +128,28 @@ function updateDisplay() {
 }
 
 function updateStability() {
-  // Calculate target based on tax rate
   let target = Math.max(0, 100 - Math.floor(taxRate * 100 * 1.5));
-
   if (stability > target) {
     stability -= 1;
   } else if (stability < target) {
     stability += 1;
   }
-
-  // Update display
-  document.getElementById("stability").textContent = stability + "%";
+  updateDisplay();
 }
+setInterval(updateStability, 2500);
 
-console.log("Money: ", money);
-console.log("Housing Factories: ", housingFactories);
-console.log("Housing Factory Price: ", housingFactoryPrice);
+setInterval(() => {
+  if (stability > 20) {
+    let autoProduced = Math.floor(population / 10);
+    if (autoProduced > 0) {
+      goods += autoProduced;
+      let tax = parseFloat((autoProduced * taxRate).toFixed(2));
+      money += tax;
+      updateDisplay();
+    }
+  }
+}, 1000);
 
-// 🔄 Save/load system
 function saveGame() {
   const gameData = {
     goods,
@@ -218,21 +201,10 @@ function resetGame() {
   farms = 0;
   housingFactories = 0;
   schools = 0;
+  housePrice = 10;
+  farmPrice = 200;
+  schoolPrice = 30;
   housingFactoryPrice = 5000;
   updateDisplay();
 }
-
-// ⏱ Intervals
-setInterval(updateStability, 2500);
-
-// Passive production if stability is OK
-setInterval(() => {
-  if (stability > 20) {
-    let autoProduced = Math.floor(population / 10);
-    if (autoProduced > 0) {
-      goods += autoProduced;
-      let tax = parseFloat((autoProduced * taxRate).toFixed(2));
-      money += tax;
-      updateDisplay();
-    }
-  }
+  
