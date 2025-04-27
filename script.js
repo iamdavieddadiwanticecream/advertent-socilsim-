@@ -120,7 +120,7 @@ function updateDisplay() {
   document.getElementById("farmCount").textContent = farms.toLocaleString();
   document.getElementById("housingFactoryCount").textContent = housingFactories.toLocaleString();
   document.getElementById("schoolCount").textContent = schools.toLocaleString();
-  document.getElementById("educationPercent").textContent = `${getEducationBuff() === 2 ? '100%' : '0%'}`;
+  document.getElementById("educationPercent").textContent =`${Math.round((getEducationBuff() - 1) * 100)}%`;
   document.getElementById("buildHouseButton").textContent = `Build House (${housePrice} coins)`;
   document.getElementById("buildFarmButton").textContent = `Build Farm (${farmPrice} coins)`;
   document.getElementById("buildHousingFactoryButton").textContent = `Build Housing Factory (${housingFactoryPrice} coins)`;
@@ -149,6 +149,17 @@ setInterval(() => {
     }
   }
 }, 1000);
+
+function getEducationBuff() {
+  const schoolsNeeded = population / 300;
+
+  if (schoolsNeeded === 0) return 1;
+
+  if (schools >= schoolsNeeded) return 2;
+
+  return 1 + (schools / schoolsNeeded); // Scales between 1.0 and 2.0
+}
+
 
 function saveGame() {
   const gameData = {
